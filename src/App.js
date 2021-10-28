@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import TodoForm from './TodoForm';
-import TodoContainer from './TodoContainer';
+import TodoForm from './components/TodoForm/TodoForm';
+import TodoContainer from './components/TodoContainer/TodoContainer';
 
 // TODO:
 // CREATE - user can create a todo - DONE

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Todo from './Todo';
+import Todo from '../Todo/Todo';
 
 function TodoContainer(props) {
     const [ editing, setEditing ] = useState(false);
