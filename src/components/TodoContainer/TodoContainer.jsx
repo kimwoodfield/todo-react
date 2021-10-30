@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Todo from '../Todo/Todo';
 
+import List from '@mui/material/List';
+
+
 function TodoContainer(props) {
-    const [ editing, setEditing ] = useState(false);
-    console.log(props);
+
+    const completeTodo = (id) => {
+        props.onComplete(id);
+    }
 
     const removeTodo = (todo) => {
         props.onDelete(todo);
@@ -13,26 +18,23 @@ function TodoContainer(props) {
         props.onRename(todo, id);
     }
 
+    if (props.items < 1) {
+        return null;
+    }
+
     return (
-        <div>
-            <h3 style={{ textAlign: 'center' }}>Current Todos</h3>
-            <ul>
+        <div style={{ width: '90%', display: 'flex', justifyContent: 'center', maxWidth: '525px' }}>
+            <List sx={{ width: '100%', maxWidth: '525px', padding: 0, margin: 0}}>
                 {
                     props.items ? (
                         props.items.map((todo) => {
-                            console.log(todo.title);
-                            return (
-                                <Todo item={todo} onRemoveTodo={removeTodo} onEditTodo={editTodo} />
-                                // <li key={todo.id}>
-                                //     {todo.title}
-                                //     <button>Edit</button>
-                                //     <button onClick={() => handleDelete(todo)}>Delete</button>
-                                // </li>
-                            )
+                                return (
+                                    <Todo item={todo} onRemoveTodo={removeTodo} onEditTodo={editTodo} onCompletedTodo={completeTodo} />
+                                )
                         })
                     ) : ''
                 }
-            </ul>
+            </List>
         </div>
     )
 }

@@ -2,18 +2,13 @@ import React, { useState } from 'react';
 import TodoForm from './components/TodoForm/TodoForm';
 import TodoContainer from './components/TodoContainer/TodoContainer';
 
-// TODO:
-// CREATE - user can create a todo - DONE
-// READ - user can read a todo - DONE
-// UPDATE - user can update a todo - DONE
-// UPDATE2 - user can mark todo as complete - DONE
-// DELETE - user can delete a todo - DONE
+import { Box } from '@mui/system';
+import Typography from '@mui/material/Typography';
 
 function App() {
   const [ tasks, setTasks ] = useState([]);
 
   const handleRemoveTodo = (id) => {
-    //  console.log('inside of app.js, our todo to delete is - ', todo);
     let newTodos = tasks.slice();
     const foundTodo = newTodos.find(todo => id === todo.id);
     if (!foundTodo) {
@@ -21,6 +16,23 @@ function App() {
     }
     const updatedTodos = newTodos.filter(todo => id !== todo.id);
     setTasks(updatedTodos);
+  }
+
+  const handleCompletedTodo = (id) => {
+    let currentTodos = tasks.slice();
+    const foundTodo = currentTodos.find(todo => id === todo.id);
+    if (!foundTodo) {
+      return;
+    }
+    foundTodo.isComplete = !foundTodo.isComplete;
+
+    setTasks(currentTodos);
+
+    let sorted;
+    setTimeout(() => {
+      sorted = sortTodos(currentTodos);
+      setTasks(sorted);
+    }, 750);
   }
 
   const handleRenameTodo = (todo, id) => {
@@ -41,13 +53,47 @@ function App() {
     });
   }
 
+  const sortTodos = (todos) => {
+    let currentTodos = todos.slice();
+    const sorted = currentTodos.sort((a, b) => {
+      if (a.isComplete) return 1;
+      else return -1;
+    });
+    return sorted;
+  }
+
   return (
     <div className="App">
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-        <h1>todo-react</h1>
-        <TodoForm onTodoChange={todoChanged} />
-        <TodoContainer items={tasks} onDelete={handleRemoveTodo} onRename={handleRenameTodo} />
-      </div>
+      <Box 
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '100%'
+        }}
+      >
+        <Typography 
+          variant="h1" 
+          component="div" 
+          gutterBottom 
+          sx={{
+            textAlign: 'center',
+            fontSize: 36,
+            fontWeight: 500,
+            padding: 2,
+          }}
+        >
+          todo-react.
+        </Typography>
+        <TodoForm onTodoChange={todoChanged} sx={{width: '100%'}} />
+        <TodoContainer 
+          items={tasks} 
+          onDelete={handleRemoveTodo} 
+          onRename={handleRenameTodo} 
+          onComplete={handleCompletedTodo}
+        />
+      </Box>
     </div>
   );
 }
